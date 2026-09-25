@@ -20,13 +20,13 @@
     "timeoutSecs": 3600
   },
   "pricing": {
-    "apply": false,
-    "$comment": "PROPOSED 2026-09-25 per the owner rule (a little below the main competitor, extreme margin); applied after the platform cost test. ad $0.0007 = just under curious_coder/facebook-ads-library-scraper $0.00075 (5,853 u30, 1.7M runs/30d, 4.8 stars) and far under apify/facebook-ads-scraper $0.0058 (6,040 u30); measured cost ~$0.037 per 1,000 ads over residential proxy (probe run OXsR97F8iiWabhPov) = ~19x margin before Apify 20%. advertiser $0.008 = just under the $0.01 advertiser-found price of the lead-finder actors (berkaydev; jurassic_jove charges $0.07).",
+    "apply": true,
+    "$comment": "CONFIRMED by measurement 2026-09-25 (owner rule: a little below the main competitor, extreme margin) per the owner rule (a little below the main competitor, extreme margin); applied after the platform cost test. ad $0.0007 = just under curious_coder/facebook-ads-library-scraper $0.00075 (5,853 u30, 1.7M runs/30d, 4.8 stars) and far under apify/facebook-ads-scraper $0.0058 (6,040 u30); measured cost ~$0.037 per 1,000 ads over residential proxy (probe run OXsR97F8iiWabhPov) = ~19x margin before Apify 20%. advertiser $0.008 = just under the $0.01 advertiser-found price of the lead-finder actors (berkaydev; jurassic_jove charges $0.07). MEASURED on Apify (build 1.0.2, 7 runs, settled usage): $0.069 per 1,000 ads overall ($0.044-0.054 on 150-200 ad runs; fixed ~$0.002 per run from the first residential page load), so $0.70/1k keeps ~8x after Apify 20%; advertiser rows cost $0.051/1k -> 126x; the scam check costs $0.155/1k (official-page lookups, 7 sessions) -> scam-check-ad $0.002 (no competitor offers it) keeps ~10x.",
     "pricingInfos": [
       {
         "pricingModel": "PAY_PER_EVENT",
         "apifyMarginPercentage": 0.2,
-        "reasonForChange": "First pricing for 1.0: $0.0007 per ad, $0.008 per advertiser in the advertiser list, no start fee.",
+        "reasonForChange": "First pricing for 1.0: $0.0007 per ad, $0.008 per advertiser, $0.002 per brand scam-check ad, no start fee.",
         "pricingPerEvent": {
           "actorChargeEvents": {
             "ad": {
@@ -39,6 +39,11 @@
               "eventTitle": "Advertiser",
               "eventDescription": "One advertiser row in the Advertiser list: page, likes, active ads found, longest-running ad, websites the ads send people to, platforms and a link to all its ads.",
               "eventPriceUsd": 0.008
+            },
+            "scam-check-ad": {
+              "eventTitle": "Scam-check ad",
+              "eventDescription": "One ad row of the brand scam check: an ad that uses the brand from a page that is not the brand's own, with its risk level and signals. The check first reads the brand's official pages to learn their real websites.",
+              "eventPriceUsd": 0.002
             }
           }
         }

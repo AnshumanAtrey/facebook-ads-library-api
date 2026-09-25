@@ -28,6 +28,7 @@ from .rows import _fold, ad_row, advertiser_rows, domain_of, impersonation, matc
 
 AD_EVENT = 'ad'                 # pay-per-event: one ad row; must equal the event key in .actor/store.json
 ADVERTISER_EVENT = 'advertiser'  # pay-per-event: one advertiser row (advertisers mode)
+SCAM_EVENT = 'scam-check-ad'    # pay-per-event: one ad row of the brand scam check (it reads the official pages first)
 PARALLEL = 3                    # searches at once, each on its own residential IP
 PUSH_BATCH = 10
 OUTPUT_EVERY_S = 10
@@ -60,7 +61,7 @@ class Delivery:
         self.actor = actor
         info = actor.get_charging_manager().get_pricing_info()
         self.ppe = info.is_pay_per_event
-        self.charged: Counter = Counter({AD_EVENT: 0, ADVERTISER_EVENT: 0})
+        self.charged: Counter = Counter({AD_EVENT: 0, ADVERTISER_EVENT: 0, SCAM_EVENT: 0})
         self.rows = 0
         self.limit = False
 
@@ -191,7 +192,7 @@ class Run:
         self.finish(s, saved)
 
     async def deliver(self, rows: list[dict]) -> int:
-        done = await self.delivery.push(rows, AD_EVENT)
+        done = await self.delivery.push(rows, SCAM_EVENT if self.cfg.mode == 'impersonation' else AD_EVENT)
         self.risk.update(r['impersonation']['risk'] for r in rows[:done] if r['impersonation'])
         return done
 

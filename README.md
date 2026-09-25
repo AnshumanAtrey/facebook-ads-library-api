@@ -33,7 +33,7 @@ It reads the public Meta Ad Library, the same one at facebook.com/ads/library, a
 
 ## How much does it cost to scrape the Facebook Ads Library?
 
-**$0.0007 per ad ($0.70 per 1,000)** and **$0.008 per advertiser** in the Advertiser list. No start fee, no monthly fee, platform usage and residential proxy included.
+**$0.0007 per ad ($0.70 per 1,000)**, **$0.008 per advertiser** in the Advertiser list and **$0.002 per ad** in the brand scam check (it first reads the brand's own pages to learn their real websites). No start fee, no monthly fee, platform usage and residential proxy included.
 
 | Run | Charged | Price |
 |---|---|---|
@@ -41,7 +41,7 @@ It reads the public Meta Ad Library, the same one at facebook.com/ads/library, a
 | 100 ads for one keyword | 100 ads | $0.07 |
 | 1,000 ads across 10 keywords | 1,000 ads | $0.70 |
 | Advertiser list from 200 ads, 60 advertisers found | 60 advertisers | $0.48 |
-| Brand scam check that finds 40 ads from other pages | 40 ads | $0.028 |
+| Brand scam check that finds 40 ads from other pages | 40 scam-check ads | $0.08 |
 | A search where Meta has no matching ads | 0 | $0.00 |
 
 Apify's free plan includes $5 of monthly credit, which covers about 7,000 ads.
@@ -123,7 +123,7 @@ The run summary is the OUTPUT record: status, notes about anything we changed in
 
 ## How fast is it?
 
-About 90 ads a minute per search, and up to 3 searches run at once. In our 2026-09-25 test on Apify one search returned 275 unique ads in about 3 minutes over the residential proxy, with no rate limits. The run uses 256 MB.
+In our 2026-09-25 tests on Apify (256 MB, peak 57-70 MB): 20 ads in 16 s, 200 ads for one keyword in 106 s, 3 keywords of 50 ads each in 49 s (they run at once, each on its own residential IP), 60 ads of 2 advertisers in 48 s, and an advertiser list of 86 businesses from 100 ads in 66 s. No run was rate-limited.
 
 ## Common questions
 

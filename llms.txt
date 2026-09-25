@@ -1,6 +1,6 @@
 # Facebook Ads Library Scraper API - Winning Ads & Scam Check
 
-> Apify actor anshumanatrey/facebook-ads-library-api. Scrapes the public Meta Ad Library (Facebook, Instagram, Messenger, Threads, Audience Network) with no login, cookies or Meta API token. Returns one row per ad with advertiser, days running, number of versions, text, headline, call to action, landing URL and domain, image and video links, platforms, and the spend, impressions and EU audience data Meta publishes. Also an advertiser lead list and a brand scam check. $0.0007 per ad ($0.70 per 1,000), $0.008 per advertiser, no start fee.
+> Apify actor anshumanatrey/facebook-ads-library-api. Scrapes the public Meta Ad Library (Facebook, Instagram, Messenger, Threads, Audience Network) with no login, cookies or Meta API token. Returns one row per ad with advertiser, days running, number of versions, text, headline, call to action, landing URL and domain, image and video links, platforms, and the spend, impressions and EU audience data Meta publishes. Also an advertiser lead list and a brand scam check. $0.0007 per ad ($0.70 per 1,000), $0.008 per advertiser, $0.002 per brand scam-check ad, no start fee.
 
 ## When to use it
 - Find competitors' winning ads: ads running 30+ days (minDaysRunning) and ads with several live versions (versions).
@@ -24,6 +24,6 @@ Advertiser row: pageName, pageId, pageUrl, pageLikes, adsInLibraryUrl, adsFound,
 
 ## Facts
 - Meta rate-limits Apify's own IPs and the datacenter proxy to 0 ads (tested 2026-09-25); every search runs on Apify's residential proxy, included in the price.
-- About 90 ads a minute per search, up to 3 searches at once, 256 MB.
+- Tested on Apify 2026-09-25: 200 ads in 106 s; 3 keywords x 50 ads in 49 s (run at once); 256 MB (peak 57-70 MB).
 - Charged only for rows saved; a spending limit stops the run between batches.
 - Built on the MIT library meta-ads-collector (Meta's public Ad Library GraphQL).
