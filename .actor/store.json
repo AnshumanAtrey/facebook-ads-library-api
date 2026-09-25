@@ -1,0 +1,9 @@
+{
+  "$comment": "Private probe for the Meta Ad Library build decision; not a Store product. No pricing.",
+  "seoTitle": "Meta Ad Library Probe - Blocking and Cost Check",
+  "seoDescription": "Private probe that measures how the public Meta Ad Library answers from Apify servers with no proxy, datacenter or residential proxy: ads returned, blocks and time.",
+  "exampleRunInput": {"query": "nike", "country": "US", "maxAds": 60, "proxy": "none"},
+  "actorPermissionLevel": "LIMITED_PERMISSIONS",
+  "isPublic": false,
+  "defaultRunOptions": {"build": "latest", "memoryMbytes": 256, "timeoutSecs": 900}
+}

@@ -1,0 +1,14 @@
+{
+    "actorSpecification": 1,
+    "name": "meta-ad-library-probe",
+    "title": "Meta Ad Library Probe",
+    "description": "Private probe: measures whether the public Meta Ad Library answers from Apify servers with no proxy, the datacenter proxy or the residential proxy, and how many ads each returns.",
+    "version": "0.1",
+    "buildTag": "latest",
+    "categories": ["DEVELOPER_TOOLS"],
+    "input": "./INPUT_SCHEMA.json",
+    "dockerfile": "../Dockerfile",
+    "readme": "../README.md",
+    "minMemoryMbytes": 128,
+    "maxMemoryMbytes": 1024
+}

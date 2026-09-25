@@ -1,0 +1,12 @@
+{
+    "title": "Meta Ad Library probe",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "query": {"title": "Search words (query)", "type": "string", "editor": "textfield", "description": "Keyword to search the Ad Library for. Technical: KEYWORD_UNORDERED search.", "prefill": "nike", "default": "nike"},
+        "pageId": {"title": "Advertiser page (pageId)", "type": "string", "editor": "textfield", "description": "Optional Facebook page id; when set the probe lists that advertiser's ads instead of searching words.", "default": ""},
+        "country": {"title": "Country (country)", "type": "string", "editor": "textfield", "description": "Two-letter country code. Technical: Ad Library country filter.", "default": "US"},
+        "maxAds": {"title": "Ads to fetch (maxAds)", "type": "integer", "editor": "number", "description": "Stop after this many ads.", "default": 300, "minimum": 1, "maximum": 5000},
+        "proxy": {"title": "Connection (proxy)", "type": "string", "editor": "select", "enum": ["none", "datacenter", "residential"], "enumTitles": ["Apify server IP (none)", "Datacenter proxy (datacenter)", "Residential proxy (residential)"], "description": "Which network the requests leave from.", "default": "none"}
+    }
+}
