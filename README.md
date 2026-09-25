@@ -156,7 +156,7 @@ Pages whose name uses the brand but are not the official pages, ads that send pe
 - Meta shows spend and impressions only for political and issue ads, and audience breakdowns only for ads delivered in the EU.
 - Whether a page is verified is not in Meta's ad search results, so the actor does not guess it.
 - Keyword search follows Meta's own matching, which can return loosely related ads; turn on Exact phrase (`exactPhrase`) for tighter matches.
-- Very large searches take time: about 90 ads a minute each.
+- Very large searches take time: about 110 ads a minute per keyword (200 in 106 s on Apify); several keywords run at once.
 
 ## About the maintainer (priority response within 1-2 hours)
 
