@@ -1,14 +1,858 @@
 {
     "actorSpecification": 1,
-    "name": "meta-ad-library-probe",
-    "title": "Meta Ad Library Probe",
-    "description": "Private probe: measures whether the public Meta Ad Library answers from Apify servers with no proxy, the datacenter proxy or the residential proxy, and how many ads each returns.",
-    "version": "0.1",
+    "name": "facebook-ads-library-api",
+    "title": "Facebook Ads Library Scraper API - Winning Ads & Scam Check",
+    "description": "Scrape the Meta (Facebook and Instagram) Ad Library with no login or cookies: ads for any keyword or advertiser, days each ad has run, versions, text, button, landing page, images and videos. Also an advertiser lead list and a brand scam check. Pay per ad, no start fee.",
+    "version": "1.0",
     "buildTag": "latest",
-    "categories": ["DEVELOPER_TOOLS"],
+    "categories": [
+        "SOCIAL_MEDIA",
+        "LEAD_GENERATION",
+        "MARKETING"
+    ],
     "input": "./INPUT_SCHEMA.json",
     "dockerfile": "../Dockerfile",
     "readme": "../README.md",
     "minMemoryMbytes": 128,
-    "maxMemoryMbytes": 1024
+    "maxMemoryMbytes": 1024,
+    "output": "./output_schema.json",
+    "storages": {
+        "dataset": {
+            "actorSpecification": 1,
+            "title": "Meta Ad Library ads",
+            "description": "One row per ad (or per advertiser in the Advertiser list mode). The run summary is the OUTPUT record of the key-value store.",
+            "views": {
+                "overview": {
+                    "title": "Ads",
+                    "description": "One row per ad: advertiser, how long it has run, how many versions, the text, the button and where it sends people.",
+                    "transformation": {
+                        "fields": [
+                            "adLibraryUrl",
+                            "pageName",
+                            "daysRunning",
+                            "versions",
+                            "adText",
+                            "callToAction",
+                            "landingDomain",
+                            "platforms",
+                            "startDate",
+                            "isActive"
+                        ]
+                    },
+                    "display": {
+                        "component": "table",
+                        "properties": {
+                            "adLibraryUrl": {
+                                "label": "Ad (adLibraryUrl)",
+                                "format": "link"
+                            },
+                            "pageName": {
+                                "label": "Advertiser (pageName)",
+                                "format": "text"
+                            },
+                            "daysRunning": {
+                                "label": "Days live (daysRunning)",
+                                "format": "number"
+                            },
+                            "versions": {
+                                "label": "Variants (versions)",
+                                "format": "number"
+                            },
+                            "adText": {
+                                "label": "Ad text (adText)",
+                                "format": "text"
+                            },
+                            "callToAction": {
+                                "label": "Button (callToAction)",
+                                "format": "text"
+                            },
+                            "landingDomain": {
+                                "label": "Goes to (landingDomain)",
+                                "format": "text"
+                            },
+                            "platforms": {
+                                "label": "Shown on (platforms)",
+                                "format": "array"
+                            },
+                            "startDate": {
+                                "label": "Started (startDate)",
+                                "format": "date"
+                            },
+                            "isActive": {
+                                "label": "Running now? (isActive)",
+                                "format": "boolean"
+                            }
+                        }
+                    }
+                },
+                "creatives": {
+                    "title": "Creatives",
+                    "description": "The creative of each ad: text, headline, button, landing page, image and video links (Meta's own URLs).",
+                    "transformation": {
+                        "fields": [
+                            "adLibraryUrl",
+                            "pageName",
+                            "headline",
+                            "adText",
+                            "callToAction",
+                            "landingUrl",
+                            "imageUrls",
+                            "videoUrls",
+                            "cards"
+                        ]
+                    },
+                    "display": {
+                        "component": "table",
+                        "properties": {
+                            "adLibraryUrl": {
+                                "label": "Ad (adLibraryUrl)",
+                                "format": "link"
+                            },
+                            "pageName": {
+                                "label": "Advertiser (pageName)",
+                                "format": "text"
+                            },
+                            "headline": {
+                                "label": "Title line (headline)",
+                                "format": "text"
+                            },
+                            "adText": {
+                                "label": "Ad text (adText)",
+                                "format": "text"
+                            },
+                            "callToAction": {
+                                "label": "Button (callToAction)",
+                                "format": "text"
+                            },
+                            "landingUrl": {
+                                "label": "Landing page (landingUrl)",
+                                "format": "link"
+                            },
+                            "imageUrls": {
+                                "label": "Images (imageUrls)",
+                                "format": "array"
+                            },
+                            "videoUrls": {
+                                "label": "Videos (videoUrls)",
+                                "format": "array"
+                            },
+                            "cards": {
+                                "label": "Carousel cards (cards)",
+                                "format": "array"
+                            }
+                        }
+                    }
+                },
+                "audience": {
+                    "title": "Reach and spend",
+                    "description": "What Meta publishes about reach: political spend and impressions ranges, EU reach by age, gender and region, targeting.",
+                    "transformation": {
+                        "fields": [
+                            "adLibraryUrl",
+                            "pageName",
+                            "spend",
+                            "impressions",
+                            "reach",
+                            "ageGender",
+                            "regions",
+                            "targeting"
+                        ]
+                    },
+                    "display": {
+                        "component": "table",
+                        "properties": {
+                            "adLibraryUrl": {
+                                "label": "Ad (adLibraryUrl)",
+                                "format": "link"
+                            },
+                            "pageName": {
+                                "label": "Advertiser (pageName)",
+                                "format": "text"
+                            },
+                            "spend": {
+                                "label": "Spend range (spend)",
+                                "format": "object"
+                            },
+                            "impressions": {
+                                "label": "Times shown (impressions)",
+                                "format": "object"
+                            },
+                            "reach": {
+                                "label": "People reached (reach)",
+                                "format": "object"
+                            },
+                            "ageGender": {
+                                "label": "Age and gender (ageGender)",
+                                "format": "array"
+                            },
+                            "regions": {
+                                "label": "By region (regions)",
+                                "format": "array"
+                            },
+                            "targeting": {
+                                "label": "Who it targets (targeting)",
+                                "format": "object"
+                            }
+                        }
+                    }
+                },
+                "advertisers": {
+                    "title": "Advertisers",
+                    "description": "Advertiser list mode: one row per business advertising on the keyword, with how many ads and where they send people.",
+                    "transformation": {
+                        "fields": [
+                            "pageName",
+                            "pageUrl",
+                            "pageLikes",
+                            "activeAds",
+                            "longestRunningDays",
+                            "landingDomains",
+                            "platforms",
+                            "adsInLibraryUrl",
+                            "searchTerm"
+                        ]
+                    },
+                    "display": {
+                        "component": "table",
+                        "properties": {
+                            "pageName": {
+                                "label": "Advertiser (pageName)",
+                                "format": "text"
+                            },
+                            "pageUrl": {
+                                "label": "Facebook page (pageUrl)",
+                                "format": "link"
+                            },
+                            "pageLikes": {
+                                "label": "Page likes (pageLikes)",
+                                "format": "number"
+                            },
+                            "activeAds": {
+                                "label": "Active ads (activeAds)",
+                                "format": "number"
+                            },
+                            "longestRunningDays": {
+                                "label": "Longest run (longestRunningDays)",
+                                "format": "number"
+                            },
+                            "landingDomains": {
+                                "label": "Websites (landingDomains)",
+                                "format": "array"
+                            },
+                            "platforms": {
+                                "label": "Shown on (platforms)",
+                                "format": "array"
+                            },
+                            "adsInLibraryUrl": {
+                                "label": "All their ads (adsInLibraryUrl)",
+                                "format": "link"
+                            },
+                            "searchTerm": {
+                                "label": "Keyword (searchTerm)",
+                                "format": "text"
+                            }
+                        }
+                    }
+                },
+                "scamCheck": {
+                    "title": "Brand scam check",
+                    "description": "Brand scam check mode: ads that use the brand from pages that are not the brand's own, with the signals.",
+                    "transformation": {
+                        "fields": [
+                            "adLibraryUrl",
+                            "pageName",
+                            "pageLikes",
+                            "landingDomain",
+                            "impersonation",
+                            "adText",
+                            "daysRunning"
+                        ]
+                    },
+                    "display": {
+                        "component": "table",
+                        "properties": {
+                            "adLibraryUrl": {
+                                "label": "Ad (adLibraryUrl)",
+                                "format": "link"
+                            },
+                            "pageName": {
+                                "label": "Advertiser (pageName)",
+                                "format": "text"
+                            },
+                            "pageLikes": {
+                                "label": "Page likes (pageLikes)",
+                                "format": "number"
+                            },
+                            "landingDomain": {
+                                "label": "Goes to (landingDomain)",
+                                "format": "text"
+                            },
+                            "impersonation": {
+                                "label": "Risk and signals (impersonation)",
+                                "format": "object"
+                            },
+                            "adText": {
+                                "label": "Ad text (adText)",
+                                "format": "text"
+                            },
+                            "daysRunning": {
+                                "label": "Days live (daysRunning)",
+                                "format": "number"
+                            }
+                        }
+                    }
+                }
+            },
+            "fields": {
+                "type": "object",
+                "properties": {
+                    "adId": {
+                        "type": [
+                            "string"
+                        ],
+                        "title": "Ad number (adId)",
+                        "description": "Meta Ad Library id of the ad.",
+                        "example": "866569929827744"
+                    },
+                    "adLibraryUrl": {
+                        "type": [
+                            "string"
+                        ],
+                        "title": "Ad page (adLibraryUrl)",
+                        "description": "Link to the ad in the Ad Library.",
+                        "example": "https://www.facebook.com/ads/library/?id=866569929827744"
+                    },
+                    "pageName": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "title": "Advertiser (pageName)",
+                        "description": "Name of the Facebook page running the ad.",
+                        "example": "Cholesterol Relief Community"
+                    },
+                    "pageId": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "title": "Advertiser id (pageId)",
+                        "description": "Numeric Facebook page id.",
+                        "example": "866655706540346"
+                    },
+                    "pageUrl": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "title": "Facebook page (pageUrl)",
+                        "description": "Link to the advertiser page.",
+                        "example": "https://www.facebook.com/61585235895092/"
+                    },
+                    "pageLikes": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
+                        "title": "Page likes (pageLikes)",
+                        "description": "Likes of the advertiser page.",
+                        "example": 2747
+                    },
+                    "pageVerified": {
+                        "type": [
+                            "boolean",
+                            "null"
+                        ],
+                        "title": "Verified page (pageVerified)",
+                        "description": "True when Meta says the page is verified; null when not reported.",
+                        "example": false
+                    },
+                    "isActive": {
+                        "type": [
+                            "boolean",
+                            "null"
+                        ],
+                        "title": "Running now? (isActive)",
+                        "description": "Whether the ad is still running.",
+                        "example": true
+                    },
+                    "startDate": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "title": "Started (startDate)",
+                        "description": "When the ad started running.",
+                        "example": "2026-06-01T12:30:00"
+                    },
+                    "endDate": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "title": "Stopped (endDate)",
+                        "description": "When the ad stopped, or null while it runs.",
+                        "example": "2026-09-25T12:30:00"
+                    },
+                    "daysRunning": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
+                        "title": "Days live (daysRunning)",
+                        "description": "Days from start to stop, or to today while running.",
+                        "example": 116
+                    },
+                    "versions": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
+                        "title": "Variants (versions)",
+                        "description": "How many versions of this ad Meta groups together.",
+                        "example": 1
+                    },
+                    "versionGroupId": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "title": "Variant group (versionGroupId)",
+                        "description": "Meta collation id shared by the versions.",
+                        "example": "1541421164361823"
+                    },
+                    "platforms": {
+                        "type": [
+                            "array"
+                        ],
+                        "title": "Shown on (platforms)",
+                        "description": "Facebook, Instagram, Messenger, Threads, Audience Network.",
+                        "example": [
+                            "FACEBOOK",
+                            "INSTAGRAM"
+                        ]
+                    },
+                    "adText": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "title": "Ad text (adText)",
+                        "description": "Main text of the ad.",
+                        "example": "I watched a man in a Carhartt jacket put back a gallon of milk at the gas station because the total at the pump had a..."
+                    },
+                    "headline": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "title": "Title line (headline)",
+                        "description": "Headline of the ad.",
+                        "example": "Natural Relief in Weeks"
+                    },
+                    "description": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "title": "Link text (description)",
+                        "description": "Description or caption under the headline.",
+                        "example": "\"My LDL went from 189 to 142 in three months. My doctor asked what medication I started. I told him it was tea - he d..."
+                    },
+                    "callToAction": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "title": "Button (callToAction)",
+                        "description": "Button text, for example Shop now.",
+                        "example": "Learn more"
+                    },
+                    "callToActionType": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "title": "Button code (callToActionType)",
+                        "description": "Meta code of the button, for example SHOP_NOW.",
+                        "example": "LEARN_MORE"
+                    },
+                    "landingUrl": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "title": "Landing page (landingUrl)",
+                        "description": "Where the ad sends people.",
+                        "example": "https://shop.pipitea.com/ppch/sp"
+                    },
+                    "landingDomain": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "title": "Goes to (landingDomain)",
+                        "description": "Site of the landing page, without www.",
+                        "example": "shop.pipitea.com"
+                    },
+                    "imageUrls": {
+                        "type": [
+                            "array"
+                        ],
+                        "title": "Images (imageUrls)",
+                        "description": "Image links (Meta URLs).",
+                        "example": [
+                            "https://scontent.fbom71-1.fna.fbcdn.net/v/t39.35426-6/710781895_4357881537807857"
+                        ]
+                    },
+                    "videoUrls": {
+                        "type": [
+                            "array"
+                        ],
+                        "title": "Videos (videoUrls)",
+                        "description": "Video links (Meta URLs).",
+                        "example": [
+                            "https://video.fbom19-5.fna.fbcdn.net/o1/v/t2/f2/m366/AQNlRdPvvifzRdx_thD8KdX7J75"
+                        ]
+                    },
+                    "thumbnailUrls": {
+                        "type": [
+                            "array"
+                        ],
+                        "title": "Video covers (thumbnailUrls)",
+                        "description": "Video thumbnail links.",
+                        "example": [
+                            "https://scontent.fbom19-5.fna.fbcdn.net/v/t39.35426-6/759803455_2105034077036341"
+                        ]
+                    },
+                    "cards": {
+                        "type": [
+                            "array"
+                        ],
+                        "title": "Carousel cards (cards)",
+                        "description": "One entry per carousel card.",
+                        "example": [
+                            {
+                                "headline": "Men's Golf Shirt, Golf Jersey, Golf, Men's Golf Long Sleeved Shirt, Suitable For Golf Sports, Golf Themed , Or Daily Casual Wear For Golf Enthusiasts, With Functionality And Theme Recognition.",
+                                "text": "🎉 Temu welcomes your return! Click now and join the event on the Temu app！Enjoy Unbelievable DISCOUNTS! 💕",
+                                "landingUrl": "https://www.temu.com/moon_subject/un3.html?subj=dpa-un&_bg_fs=1&_p_jump_id=558&_x_vst_scene=adg&goods_id=601105513713226&sku_id=100641284353621&adg_ctx=a-3a0a863a&_p_rfs=1&_x_ads_channel=facebook&_x_ads_creative_id={{ad.id}}&_x_ads_id={{adset.id}}&_x_ads_set={{campaign.id}}&_x_ads_sub_channel=shopping&_x_ns_catalog_id=451474584079099&_x_ns_gid=601105513713226&_x_ns_placement={{placement}}&_x_ns_product_id=100641284353621&_x_ns_site_id=100&_x_ns_source={{site_source_name}}&mrk_rec=1",
+                                "imageUrl": "https://scontent.fbom61-1.fna.fbcdn.net/v/t39.35426-6/670861520_26438089059145061_427038436357622542_n.jpg?stp=dst-jpg_s600x600_tt6&_nc_cat=103&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=c53f8f&_nc_ohc=fXy09VCSiMsQ7kNvwGVnXuS&_nc_oc=AdpRXyJYU2Vb6zq3s9Hu3kjONIOXmwDXm94Sa5EtFY4ba9AIHDQzOQkK4sU64g33JajHTHpnUUJO3AK_RXN7vB6-&_nc_zt=14&_nc_ht=scontent.fbom61-1.fna&_nc_gid=HRQZhwGnKYJC2LClh1NDAg&_nc_ss=78289&oh=00_AQJwU3UE5ciqwHxCaTzQemaJPgTaK1FxQr5l_xFWTiZLjA&oe=6ABC6C9F",
+                                "videoUrl": null
+                            },
+                            {
+                                "headline": "Women's Gradient Blue-purple Peony Print Maxi Dress - Short Sleeve Crew Neck -line Dress With Full, Fitted Bodice & Hem, Machine Washable Suitable For Daily , Dates, Spring/summer Outfits",
+                                "text": "🎉 Temu welcomes your return! Click now and join the event on the Temu app！Enjoy Unbelievable DISCOUNTS! 💕",
+                                "landingUrl": "https://www.temu.com/moon_subject/un3.html?subj=dpa-un&_bg_fs=1&_p_jump_id=558&_x_vst_scene=adg&goods_id=605538997870032&sku_id=100129243692801&adg_ctx=a-7789f652&_p_rfs=1&_x_ads_channel=facebook&_x_ads_creative_id={{ad.id}}&_x_ads_id={{adset.id}}&_x_ads_set={{campaign.id}}&_x_ads_sub_channel=shopping&_x_ns_catalog_id=451474584079099&_x_ns_gid=605538997870032&_x_ns_placement={{placement}}&_x_ns_product_id=100129243692801&_x_ns_site_id=100&_x_ns_source={{site_source_name}}&mrk_rec=1",
+                                "imageUrl": "https://scontent.fbom61-1.fna.fbcdn.net/v/t39.35426-6/669564748_1954335075164417_5439801867278233770_n.jpg?stp=dst-jpg_s600x600_tt6&_nc_cat=100&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=c53f8f&_nc_ohc=Tlk5X0TpbSgQ7kNvwH6kOna&_nc_oc=AdqlaCSH7vpZHpx7gKvlPlfVfGngl4_bDYcvTG7cxXcH7iaH7tayn1GMDR8G5A2ZXn1zwSRUCbFa7FcYP9dwpIgm&_nc_zt=14&_nc_ht=scontent.fbom61-1.fna&_nc_gid=HRQZhwGnKYJC2LClh1NDAg&_nc_ss=78289&oh=00_AQKUEAzGpGUP14re_d9_3Qa264QQqfguA9WfPhbROyLyHA&oe=6ABC497A",
+                                "videoUrl": null
+                            },
+                            {
+                                "headline": "Women's Non-slip Glossy Platform Loafers With Metal Horsebit Accent - Slip-on Round Toe Casual Shoes Suitable For & Semi-formal Wear, - (shiny Loafers), Women Shoes",
+                                "text": "🎉 Temu welcomes your return! Click now and join the event on the Temu app！Enjoy Unbelievable DISCOUNTS! 💕",
+                                "landingUrl": "https://www.temu.com/moon_subject/un3.html?subj=dpa-un&_bg_fs=1&_p_jump_id=558&_x_vst_scene=adg&goods_id=605555305368219&sku_id=100719399038780&adg_ctx=a-6d90f4b0&_p_rfs=1&_x_ads_channel=facebook&_x_ads_creative_id={{ad.id}}&_x_ads_id={{adset.id}}&_x_ads_set={{campaign.id}}&_x_ads_sub_channel=shopping&_x_ns_catalog_id=451474584079099&_x_ns_gid=605555305368219&_x_ns_placement={{placement}}&_x_ns_product_id=100719399038780&_x_ns_site_id=100&_x_ns_source={{site_source_name}}&mrk_rec=1",
+                                "imageUrl": "https://scontent.fbom61-1.fna.fbcdn.net/v/t39.35426-6/669033035_4442886546038405_1221733810161821867_n.jpg?stp=dst-jpg_s600x600_tt6&_nc_cat=103&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=c53f8f&_nc_ohc=cahzD8uODM8Q7kNvwHyVfk0&_nc_oc=AdpWY538BY71Xu47zUtovk_Rdvj2JqrC3L3B1jlxz8aczX5bkKEj8vfFLNw1x_X6vmedquJBC65tvQxyZ5I3Si4a&_nc_zt=14&_nc_ht=scontent.fbom61-1.fna&_nc_gid=HRQZhwGnKYJC2LClh1NDAg&_nc_ss=78289&oh=00_AQL0UMrDlfTewQIopKDkcHRSwfwALLCHLUFcd-mGapfrAg&oe=6ABC5DC4",
+                                "videoUrl": null
+                            },
+                            {
+                                "headline": "/summer European And Women's Casual V-neck Waist-cinching Jumpsuit With Shorts, Comfortable, Elegant, Drawstring, Simple And Fashionable",
+                                "text": "🎉 Temu welcomes your return! Click now and join the event on the Temu app！Enjoy Unbelievable DISCOUNTS! 💕",
+                                "landingUrl": "https://www.temu.com/moon_subject/un3.html?subj=dpa-un&_bg_fs=1&_p_jump_id=558&_x_vst_scene=adg&goods_id=601099539359952&sku_id=100478209802879&adg_ctx=a-3bb2f647&_p_rfs=1&_x_ads_channel=facebook&_x_ads_creative_id={{ad.id}}&_x_ads_id={{adset.id}}&_x_ads_set={{campaign.id}}&_x_ads_sub_channel=shopping&_x_ns_catalog_id=451474584079099&_x_ns_gid=601099539359952&_x_ns_placement={{placement}}&_x_ns_product_id=100478209802879&_x_ns_site_id=100&_x_ns_source={{site_source_name}}&mrk_rec=1",
+                                "imageUrl": "https://scontent.fbom19-4.fna.fbcdn.net/v/t39.35426-6/670137277_1730111958154903_9072418508658760647_n.jpg?stp=dst-jpg_s600x600_tt6&_nc_cat=104&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=c53f8f&_nc_ohc=jC00PWMM0KwQ7kNvwE4Irld&_nc_oc=AdpOyMmmd3isUZDzBWEJBwhWW2dVME33f8-ijn_jg6KXlfZ0jzVEGiDwLkOuHr20lBkoYX9NMDG2BKqRUhfNjbcr&_nc_zt=14&_nc_ht=scontent.fbom19-4.fna&_nc_gid=HRQZhwGnKYJC2LClh1NDAg&_nc_ss=78289&oh=00_AQI4Zrdo5ryKY7fdlMCQU_1Bayh_wMf51e-gMwwPvWyGlQ&oe=6ABC5E3A",
+                                "videoUrl": null
+                            },
+                            {
+                                "headline": "Electric Motorcycle - 265Lbs Capacity                                                  Say , Electric Four-wheeled Motorcycle/folding Mobility, Electric Moped For Adults, 4 Wheels Electric Moped For Adults, 250w 24v 13.5ah, With Led Headlight, Basket, Supports Up To 265lbs",
+                                "text": "🎉 Temu welcomes your return! Click now and join the event on the Temu app！Enjoy Unbelievable DISCOUNTS! 💕",
+                                "landingUrl": "https://www.temu.com/moon_subject/un3.html?subj=dpa-un&_bg_fs=1&_p_jump_id=558&_x_vst_scene=adg&goods_id=601099816621625&sku_id=100848784929357&adg_ctx=a-3b1f6418&_p_rfs=1&_x_ads_channel=facebook&_x_ads_creative_id={{ad.id}}&_x_ads_id={{adset.id}}&_x_ads_set={{campaign.id}}&_x_ads_sub_channel=shopping&_x_ns_catalog_id=451474584079099&_x_ns_gid=601099816621625&_x_ns_placement={{placement}}&_x_ns_product_id=100848784929357&_x_ns_site_id=100&_x_ns_source={{site_source_name}}&mrk_rec=1",
+                                "imageUrl": "https://scontent.fbom61-1.fna.fbcdn.net/v/t39.35426-6/669665320_1651885819479714_2723073059425839020_n.jpg?stp=dst-jpg_s600x600_tt6&_nc_cat=109&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=c53f8f&_nc_ohc=89W_iUTCfDIQ7kNvwG8dwjG&_nc_oc=AdrLZDJ2bOXjVCJdq5-tiPDMfkiw4y_e9XcBiEAwsytme40hjAiZn9d46OWFTBvNNF6A1zTuJ6n0iZff9JrJVdPT&_nc_zt=14&_nc_ht=scontent.fbom61-1.fna&_nc_gid=HRQZhwGnKYJC2LClh1NDAg&_nc_ss=78289&oh=00_AQJp9IWKTrKegyirdZS-KT_pP6qGXJx6BA8wX4Vdo3CtwA&oe=6ABC61A2",
+                                "videoUrl": null
+                            },
+                            {
+                                "headline": "Women's Soft-soled Sneakers Suitable For Running, Walking & Casual Attire - Lightweight Cushioned Sole & Pvc Outsole, Low-top Lace-up Sneakers With Cushioned Insole, - Versatile For Gym, Casual,",
+                                "text": "🎉 Temu welcomes your return! Click now and join the event on the Temu app！Enjoy Unbelievable DISCOUNTS! 💕",
+                                "landingUrl": "https://www.temu.com/moon_subject/un3.html?subj=dpa-un&_bg_fs=1&_p_jump_id=558&_x_vst_scene=adg&goods_id=605762604620639&sku_id=100368151276617&adg_ctx=a-e71f600e&_p_rfs=1&_x_ads_channel=facebook&_x_ads_creative_id={{ad.id}}&_x_ads_id={{adset.id}}&_x_ads_set={{campaign.id}}&_x_ads_sub_channel=shopping&_x_ns_catalog_id=451474584079099&_x_ns_gid=605762604620639&_x_ns_placement={{placement}}&_x_ns_product_id=100368151276617&_x_ns_site_id=100&_x_ns_source={{site_source_name}}&mrk_rec=1",
+                                "imageUrl": "https://scontent.fbom19-6.fna.fbcdn.net/v/t39.35426-6/670267067_1518720956482827_6844542471091467698_n.jpg?stp=dst-jpg_s600x600_tt6&_nc_cat=104&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=c53f8f&_nc_ohc=Lv_fN1s6-l8Q7kNvwHZtwwY&_nc_oc=AdqgH3wGt2nBIzGBii-kDonqIdU4bp_9n8aGQsJF2XRWkI9saftJ0X0VSxkeTyvh9Xsu8u7Y9GbSmSBlVhCZYCek&_nc_zt=14&_nc_ht=scontent.fbom19-6.fna&_nc_gid=HRQZhwGnKYJC2LClh1NDAg&_nc_ss=78289&oh=00_AQK0AzGf6kwjX27RIjuiBH1d6pvpGlJ3r6W14wT4VIf3BQ&oe=6ABC656A",
+                                "videoUrl": null
+                            }
+                        ]
+                    },
+                    "languages": {
+                        "type": [
+                            "array"
+                        ],
+                        "title": "Ad languages (languages)",
+                        "description": "Languages Meta lists for the ad.",
+                        "example": [
+                            "en"
+                        ]
+                    },
+                    "adType": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "title": "Ad category (adType)",
+                        "description": "Meta ad category, for example POLITICAL_AND_ISSUE_ADS.",
+                        "example": "POLITICAL_AND_ISSUE_ADS"
+                    },
+                    "categories": {
+                        "type": [
+                            "array"
+                        ],
+                        "title": "Special categories (categories)",
+                        "description": "Meta categories of the ad.",
+                        "example": [
+                            "UNKNOWN"
+                        ]
+                    },
+                    "spend": {
+                        "type": [
+                            "object",
+                            "null"
+                        ],
+                        "title": "Spend range (spend)",
+                        "description": "Political and issue ads: spend range and currency.",
+                        "example": {
+                            "lower": 100,
+                            "upper": 499,
+                            "currency": "USD"
+                        }
+                    },
+                    "impressions": {
+                        "type": [
+                            "object",
+                            "null"
+                        ],
+                        "title": "Times shown (impressions)",
+                        "description": "Political and issue ads: impressions range.",
+                        "example": {
+                            "lower": 1000,
+                            "upper": 4999
+                        }
+                    },
+                    "reach": {
+                        "type": [
+                            "object",
+                            "null"
+                        ],
+                        "title": "People reached (reach)",
+                        "description": "Reach range where Meta shows it.",
+                        "example": {
+                            "lower": 1000,
+                            "upper": 4999
+                        }
+                    },
+                    "audienceSize": {
+                        "type": [
+                            "object",
+                            "null"
+                        ],
+                        "title": "Audience size (audienceSize)",
+                        "description": "Estimated audience size range.",
+                        "example": {
+                            "lower": 100000,
+                            "upper": 500000
+                        }
+                    },
+                    "ageGender": {
+                        "type": [
+                            "array"
+                        ],
+                        "title": "Age and gender (ageGender)",
+                        "description": "EU and political ads: share by age and gender.",
+                        "example": [
+                            {
+                                "group": "25-34 female",
+                                "percent": 21.4
+                            }
+                        ]
+                    },
+                    "regions": {
+                        "type": [
+                            "array"
+                        ],
+                        "title": "By region (regions)",
+                        "description": "EU and political ads: share by region.",
+                        "example": [
+                            {
+                                "group": "California",
+                                "percent": 12.5
+                            }
+                        ]
+                    },
+                    "targeting": {
+                        "type": [
+                            "object",
+                            "null"
+                        ],
+                        "title": "Who it targets (targeting)",
+                        "description": "Age, gender and location targeting where shown.",
+                        "example": {
+                            "ageMin": 18,
+                            "ageMax": 65,
+                            "genders": [
+                                "All"
+                            ],
+                            "locations": [
+                                "United States"
+                            ],
+                            "excludedLocations": [],
+                            "interests": []
+                        }
+                    },
+                    "fundingEntity": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "title": "Paid for by (fundingEntity)",
+                        "description": "Who paid for the ad, when Meta shows it.",
+                        "example": "Example PAC"
+                    },
+                    "disclaimer": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "title": "Paid-for text (disclaimer)",
+                        "description": "Paid-for-by disclaimer text.",
+                        "example": "Paid for by Example PAC"
+                    },
+                    "beneficiaryPayers": {
+                        "type": [
+                            "array"
+                        ],
+                        "title": "EU payers (beneficiaryPayers)",
+                        "description": "EU beneficiary and payer names.",
+                        "example": [
+                            "Example GmbH"
+                        ]
+                    },
+                    "searchTerm": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "title": "Found by (searchTerm)",
+                        "description": "The keyword or advertiser that found this row.",
+                        "example": "running shoes"
+                    },
+                    "country": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "title": "Where searched (country)",
+                        "description": "Country of the search, ALL for worldwide.",
+                        "example": "US"
+                    },
+                    "impersonation": {
+                        "type": [
+                            "object",
+                            "null"
+                        ],
+                        "title": "Risk and signals (impersonation)",
+                        "description": "Brand scam check: risk level and signals.",
+                        "example": {
+                            "brand": "Nike",
+                            "risk": "low",
+                            "signals": [
+                                "ad text names the brand",
+                                "page is not verified"
+                            ],
+                            "officialPageIds": [
+                                "15087023444",
+                                "20825389113",
+                                "51212153078",
+                                "5941596308",
+                                "65604112975"
+                            ]
+                        }
+                    },
+                    "scrapedAt": {
+                        "type": [
+                            "string"
+                        ],
+                        "title": "Read at (scrapedAt)",
+                        "description": "When the row was read.",
+                        "example": "2026-09-25T14:41:11+00:00"
+                    },
+                    "adsInLibraryUrl": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "title": "All their ads (adsInLibraryUrl)",
+                        "description": "Advertiser list: link to all ads of the page.",
+                        "example": "https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=ALL&view_all_page_id=132720146755099"
+                    },
+                    "adsFound": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
+                        "title": "Ads found (adsFound)",
+                        "description": "Advertiser list: ads of this page in the search.",
+                        "example": 3
+                    },
+                    "activeAds": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
+                        "title": "Active ads (activeAds)",
+                        "description": "Advertiser list: of those, still running.",
+                        "example": 3
+                    },
+                    "firstAdStarted": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "title": "First ad (firstAdStarted)",
+                        "description": "Advertiser list: start of its oldest ad found.",
+                        "example": "2026-04-23T12:30:00"
+                    },
+                    "longestRunningDays": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ],
+                        "title": "Longest run (longestRunningDays)",
+                        "description": "Advertiser list: most days one ad has run.",
+                        "example": 155
+                    },
+                    "landingDomains": {
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "title": "Websites (landingDomains)",
+                        "description": "Advertiser list: sites its ads send people to.",
+                        "example": [
+                            "bestfitnessgyms.com"
+                        ]
+                    },
+                    "sampleAdUrl": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "title": "Example ad (sampleAdUrl)",
+                        "description": "Advertiser list: one of its ads.",
+                        "example": "https://www.facebook.com/ads/library/?id=1295787955996567"
+                    },
+                    "sampleAdText": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "title": "Example text (sampleAdText)",
+                        "description": "Advertiser list: text of that ad.",
+                        "example": "🔥 Join Today and Get More Than Just a Keytag! Discover our exclusive specials and choose the BEST plan for you 🔥\n\n🧘‍♀..."
+                    }
+                }
+            }
+        }
+    }
 }

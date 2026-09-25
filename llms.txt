@@ -1,0 +1,29 @@
+# Facebook Ads Library Scraper API - Winning Ads & Scam Check
+
+> Apify actor anshumanatrey/facebook-ads-library-api. Scrapes the public Meta Ad Library (Facebook, Instagram, Messenger, Threads, Audience Network) with no login, cookies or Meta API token. Returns one row per ad with advertiser, days running, number of versions, text, headline, call to action, landing URL and domain, image and video links, platforms, and the spend, impressions and EU audience data Meta publishes. Also an advertiser lead list and a brand scam check. $0.0007 per ad ($0.70 per 1,000), $0.008 per advertiser, no start fee.
+
+## When to use it
+- Find competitors' winning ads: ads running 30+ days (minDaysRunning) and ads with several live versions (versions).
+- Weekly competitor watchlists and swipe files for agencies and creative strategists.
+- Lead lists of businesses advertising on a keyword now (mode advertisers).
+- Brand protection: ads using a brand name from pages that are not the brand's own, with risk and signals (mode impersonation).
+- Feeding ad data to n8n, Make, Zapier, Python, JavaScript or an AI agent (Apify MCP server).
+
+## Inputs
+- mode: ads (default) | pages | advertisers | impersonation
+- searchTerms: keywords, one per line (commas split); a pasted Ad Library search link works; for impersonation, the brand
+- pages: Facebook page links, page ids or names (mode pages)
+- country: ALL (worldwide, default), a country name or an ISO code
+- maxAds: ads saved per search (default 100)
+- status: active | inactive | all; adType: all | political | housing | employment | credit; mediaType: all | image | video | meme | none
+- minDaysRunning, exactPhrase, groupVersions, sortBy (impressions | relevance), officialPages (impersonation)
+
+## Output fields (ad row)
+adId, adLibraryUrl, pageName, pageId, pageUrl, pageLikes, pageVerified (true or null; Meta's ad search does not report it), isActive, startDate, endDate, daysRunning, versions, versionGroupId, platforms, adText, headline, description, callToAction, callToActionType, landingUrl, landingDomain, imageUrls, videoUrls, thumbnailUrls, cards, languages, adType, categories, spend, impressions, reach, audienceSize, ageGender, regions, targeting, fundingEntity, disclaimer, beneficiaryPayers, searchTerm, country, impersonation {brand, risk, signals, officialPageIds}, scrapedAt.
+Advertiser row: pageName, pageId, pageUrl, pageLikes, adsInLibraryUrl, adsFound, activeAds, firstAdStarted, longestRunningDays, platforms, landingDomains, sampleAdUrl, sampleAdText, searchTerm, country.
+
+## Facts
+- Meta rate-limits Apify's own IPs and the datacenter proxy to 0 ads (tested 2026-09-25); every search runs on Apify's residential proxy, included in the price.
+- About 90 ads a minute per search, up to 3 searches at once, 256 MB.
+- Charged only for rows saved; a spending limit stops the run between batches.
+- Built on the MIT library meta-ads-collector (Meta's public Ad Library GraphQL).

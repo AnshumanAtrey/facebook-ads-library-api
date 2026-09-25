@@ -1,0 +1,26 @@
+{
+    "actorOutputSchemaVersion": 1,
+    "title": "Facebook Ads Library Scraper API output",
+    "description": "The ads (or advertisers) found and the run summary.",
+    "type": "object",
+    "properties": {
+        "ads": {
+            "type": "string",
+            "title": "Saved rows (ads)",
+            "description": "Every saved row as JSON.",
+            "template": "{{links.apiDefaultDatasetUrl}}/items"
+        },
+        "summary": {
+            "type": "string",
+            "title": "Run summary (summary)",
+            "description": "Status, notes, one entry per search, charged events.",
+            "template": "{{links.apiDefaultKeyValueStoreUrl}}/records/OUTPUT"
+        },
+        "log": {
+            "type": "string",
+            "title": "Run log (log)",
+            "description": "The full log of the run.",
+            "template": "{{links.publicRunUrl}}/log"
+        }
+    }
+}
