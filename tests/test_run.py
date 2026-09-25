@@ -147,3 +147,21 @@ class RunTests(unittest.IsolatedAsyncioTestCase):
 
 if __name__ == '__main__':
     asyncio.run(unittest.main())
+
+
+class Worldwide(unittest.TestCase):
+    def test_all_passes_the_library_check_and_codes_still_do(self):
+        c = meta.WorldwideCollector.__new__(meta.WorldwideCollector)
+        c._validate_params('ALL', 'ACTIVE', 'KEYWORD_UNORDERED', None, 'ALL')      # no exception
+        c._validate_params('ALL', 'ACTIVE', 'KEYWORD_UNORDERED', None, 'IN')
+        with self.assertRaises(meta.InvalidParameterError):
+            c._validate_params('ALL', 'ACTIVE', 'KEYWORD_UNORDERED', None, 'INDIA')
+
+
+class InputErrors(RunTests):
+    async def test_refused_settings_are_not_retried_or_called_a_block(self):
+        run, actor = await self.run_it({'searchTerms': ['shoes']}, [meta.InvalidParameterError('country', 'X', 'a code')])
+        s = run.searches[0]
+        self.assertEqual((s['sessions'], s['status']), (1, 'failed'))
+        self.assertIn('refused', s['reason'])
+        self.assertNotIn('blocked', run.message(True))

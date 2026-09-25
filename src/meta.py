@@ -14,13 +14,22 @@ import collections
 import secrets
 from urllib.parse import urlsplit
 
-from meta_ads_collector import (ERROR_OCCURRED, PAGE_FETCHED, RATE_LIMITED, SESSION_REFRESHED, MetaAdsCollector,
-                                MetaAdsError)
+from meta_ads_collector import (ERROR_OCCURRED, PAGE_FETCHED, RATE_LIMITED, SESSION_REFRESHED, InvalidParameterError,
+                                MetaAdsCollector, MetaAdsError)
 
 MAX_ROTATIONS = 2
 PAGE_SIZE = 30
 RATE_DELAY_S = 1.5      # between the library's requests in one session (its default is 2.0 + 1.0 jitter)
 JITTER_S = 1.0
+
+
+class WorldwideCollector(MetaAdsCollector):
+    """The Ad Library searches worldwide with country=ALL (tested 2026-09-25: 30 ads for "running shoes"),
+    but meta-ads-collector 1.4.0 only lets 2-letter codes through its check. ALL is checked as US and
+    sent to Meta unchanged."""
+
+    def _validate_params(self, ad_type, status, search_type, sort_by, country):
+        return super()._validate_params(ad_type, status, search_type, sort_by, 'US' if country == 'ALL' else country)
 
 
 def library_proxy(url: str | None) -> str | None:
@@ -35,7 +44,7 @@ def library_proxy(url: str | None) -> str | None:
 class Session:
     """One residential IP and one library client, with the events it saw."""
 
-    def __init__(self, proxy_url: str | None, factory=MetaAdsCollector):
+    def __init__(self, proxy_url: str | None, factory=WorldwideCollector):
         self.events: collections.Counter = collections.Counter()
 
         def on(name):
@@ -52,7 +61,7 @@ class Session:
 class Sessions:
     """Makes residential sessions. proxy_cfg is an Apify ProxyConfiguration (or None in tests/local)."""
 
-    def __init__(self, proxy_cfg, factory=MetaAdsCollector):
+    def __init__(self, proxy_cfg, factory=WorldwideCollector):
         self.proxy_cfg = proxy_cfg
         self.factory = factory
         self.tag = secrets.token_hex(3)
@@ -79,4 +88,4 @@ def resolve_pages(session: Session, name: str, country: str) -> list:
     return session.client.search_pages(name, country=country if country != 'ALL' else 'US')
 
 
-__all__ = ['MAX_ROTATIONS', 'MetaAdsError', 'Session', 'Sessions', 'library_proxy', 'resolve_pages', 'search_kwargs']
+__all__ = ['MAX_ROTATIONS', 'InvalidParameterError', 'MetaAdsError', 'WorldwideCollector', 'Session', 'Sessions', 'library_proxy', 'resolve_pages', 'search_kwargs']

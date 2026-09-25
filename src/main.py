@@ -131,6 +131,9 @@ class Run:
                     yield ad
                     if self.stop or not self.time_ok() or (want_raw and len(seen) >= want_raw):
                         return
+            except meta.InvalidParameterError as exc:   # our input, not Meta blocking: a new IP will not help
+                s['problem'], s['inputError'] = f'{exc}'[:200], True
+                return
             except Exception as exc:  # noqa: BLE001  the library raises many kinds; each one means a new IP
                 problem = f'{type(exc).__name__}: {str(exc)[:160]}'
             if problem is None and not (got == 0 and session.blocked):
@@ -214,7 +217,9 @@ class Run:
 
     def finish(self, s: dict, saved: int) -> None:
         s['saved'] = saved
-        if s['problem'] and not saved:
+        if s.get('inputError'):
+            s['status'], s['reason'] = 'failed', f'Meta refused the search settings: {s["problem"]}'
+        elif s['problem'] and not saved:
             s['status'], s['reason'] = 'failed', f'Meta blocked this search even on fresh IPs ({s["problem"]}).'
         elif s['problem']:
             s['status'], s['reason'] = 'partial', f'Saved {saved}, then Meta blocked the search ({s["problem"]}).'
@@ -289,9 +294,12 @@ class Run:
             parts.append(f'Brand "{cfg.terms[0]}": {self.risk["high"]} high-risk, {self.risk["medium"]} medium and '
                          f'{self.risk["low"]} low-risk ads from other pages; '
                          f'{sum(s["officialSkipped"] for s in self.searches)} ads from the official pages skipped.')
-        failed = [s for s in self.searches if s['status'] == 'failed']
-        if failed and final:
-            parts.append(f'{len(failed)} search(es) were blocked by Meta: run again later.')
+        blocked = [s for s in self.searches if s['status'] == 'failed' and not s.get('inputError')]
+        refused = [s for s in self.searches if s.get('inputError')]
+        if blocked and final:
+            parts.append(f'{len(blocked)} search(es) were blocked by Meta: run again later.')
+        if refused and final:
+            parts.append(f'{len(refused)} search(es) had settings Meta refused: {refused[0]["reason"]}')
         if self.stop and final:
             parts.append(f'The run stopped early because {STOP_REASONS[self.stop]}')
         return ' '.join(parts)
