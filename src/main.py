@@ -2,6 +2,7 @@
 import asyncio
 import collections
 import time
+from urllib.parse import urlsplit
 
 from apify import Actor
 from meta_ads_collector import (ERROR_OCCURRED, PAGE_FETCHED, RATE_LIMITED, SESSION_REFRESHED, MetaAdsCollector)
@@ -11,7 +12,13 @@ async def proxy_url(arm: str) -> str | None:
     if arm == 'none':
         return None
     cfg = await Actor.create_proxy_configuration(groups=['RESIDENTIAL'] if arm == 'residential' else None)
-    return await cfg.new_url(f'meta{int(time.time())}') if cfg else None
+    url = await cfg.new_url(f'meta{int(time.time())}') if cfg else None
+    if not url:
+        return None
+    # meta-ads-collector takes one proxy as host:port:user:pass and splits it on ':', so Apify's
+    # http://user:pass@host:port has to be converted or it is mangled into an invalid address.
+    u = urlsplit(url)
+    return f'{u.hostname}:{u.port}:{u.username}:{u.password}'
 
 
 def collect(query: str, page_id: str, country: str, max_ads: int, proxy: str | None, events: collections.Counter):
