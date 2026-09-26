@@ -1,6 +1,6 @@
-# Facebook Ads Library Scraper API - Winning Ads & Scam Check
+# Facebook Ads Library Scraper API - Meta Ad Library & Scam Check
 
-> Apify actor anshumanatrey/facebook-ads-library-api. Scrapes the public Meta Ad Library (Facebook, Instagram, Messenger, Threads, Audience Network) with no login, cookies or Meta API token. Returns one row per ad with advertiser, days running, number of versions, text, headline, call to action, landing URL and domain, image and video links, platforms, and the spend, impressions and EU audience data Meta publishes. Also an advertiser lead list and a brand scam check. $0.0007 per ad ($0.70 per 1,000), $0.008 per advertiser, $0.002 per brand scam-check ad, no start fee.
+> Apify actor anshumanatrey/facebook-ads-library-api. Scrapes the Facebook Ads Library, now called the Meta Ad Library (Facebook, Instagram, Messenger, Threads, Audience Network ads), with no login, cookies or Meta API token. Returns one row per ad with advertiser, days running, number of versions, text, headline, call to action, landing URL and domain, image and video links, platforms, and the spend, impressions and EU audience data Meta publishes. Also an advertiser lead list and a brand scam check. $0.0007 per ad ($0.70 per 1,000), $0.008 per advertiser, $0.002 per brand scam-check ad, no start fee.
 
 ## When to use it
 - Find competitors' winning ads: ads running 30+ days (minDaysRunning) and ads with several live versions (versions).

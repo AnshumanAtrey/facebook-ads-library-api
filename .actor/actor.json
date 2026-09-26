@@ -1,8 +1,8 @@
 {
     "actorSpecification": 1,
     "name": "facebook-ads-library-api",
-    "title": "Facebook Ads Library Scraper API - Winning Ads & Scam Check",
-    "description": "Scrape the Meta (Facebook and Instagram) Ad Library with no login or cookies: ads for any keyword or advertiser, days each ad has run, versions, text, button, landing page, images and videos. Also an advertiser lead list and a brand scam check. Pay per ad, no start fee.",
+    "title": "Facebook Ads Library Scraper API - Meta Ad Library & Scam Check",
+    "description": "Scrape the Meta Ad Library (Facebook Ads Library) with no login or cookies: find winning ads by days running and versions, with text, button, landing page, images and videos. Also an advertiser lead list and a brand scam check. Pay per ad, no start fee.",
     "version": "1.0",
     "buildTag": "latest",
     "categories": [

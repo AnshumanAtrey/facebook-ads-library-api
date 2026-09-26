@@ -1,6 +1,6 @@
-# Facebook Ads Library Scraper API - Winning Ads & Scam Check
+# Facebook Ads Library Scraper API - Meta Ad Library & Scam Check
 
-Scrape the Meta Ad Library (Facebook, Instagram, Messenger, Threads and Audience Network ads) with no login, no cookies and no Meta API token. Type a keyword or paste a Facebook page, and get every matching ad as a row: the advertiser, **how many days the ad has run**, **how many versions it has**, the text, headline and button, **the landing page and its domain**, image and video links, platforms, and the reach, spend and EU audience data Meta publishes. On top of that: an **advertiser list** (businesses advertising on a keyword right now, one row each) and a **brand scam check** (ads that use a brand's name from pages that are not the brand's own). **$0.70 per 1,000 ads**, no start fee. Use it from the Apify Console, the API, Python, JavaScript, n8n, Make, Zapier or an AI agent through the Apify MCP server.
+Scrape the Facebook Ads Library, which Meta now calls the Meta Ad Library (ads on Facebook, Instagram, Messenger, Threads and Audience Network), with no login, no cookies and no Meta API token. Type a keyword or paste a Facebook page, and get every matching ad as a row: the advertiser, **how many days the ad has run**, **how many versions it has**, the text, headline and button, **the landing page and its domain**, image and video links, platforms, and the reach, spend and EU audience data Meta publishes. On top of that: an **advertiser list** (businesses advertising on a keyword right now, one row each) and a **brand scam check** (ads that use a brand's name from pages that are not the brand's own). **$0.70 per 1,000 ads**, no start fee. Use it from the Apify Console, the API, Python, JavaScript, n8n, Make, Zapier or an AI agent through the Apify MCP server.
 
 ## What does it do?
 
@@ -126,6 +126,9 @@ The run summary is the OUTPUT record: status, notes about anything we changed in
 In our 2026-09-25 tests on Apify (256 MB, peak 57-70 MB): 20 ads in 16 s, 200 ads for one keyword in 106 s, 3 keywords of 50 ads each in 49 s (they run at once, each on its own residential IP), 60 ads of 2 advertisers in 48 s, and an advertiser list of 86 businesses from 100 ads in 66 s. No run was rate-limited.
 
 ## Common questions
+
+**Q: Is the Facebook Ads Library the same as the Meta Ad Library?**
+Yes. It is the same public library at facebook.com/ads/library; Meta now calls it the Meta Ad Library, and it covers ads on Facebook, Instagram, Messenger, Threads and Audience Network. This actor reads all of them.
 
 **Q: Do I need a Facebook account, cookies or a Meta API token?**
 No. It reads the public Ad Library the way a logged-out visitor sees it.
