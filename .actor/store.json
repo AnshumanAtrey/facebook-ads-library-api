@@ -11,8 +11,8 @@
     "maxAds": 20
   },
   "actorPermissionLevel": "LIMITED_PERMISSIONS",
-  "isPublic$comment": "Private until the owner decides to publish.",
-  "isPublic": false,
+  "isPublic$comment": "Published 2026-09-27 (build 1.0.6+) after the platform tests: 8 runs across every mode, 4 paid runs with charges equal to delivered data (a $0.01 limit stopped at 14 ads), and the example input in 16 s. A paid public actor cannot be made private again until monetization is cancelled in Console.",
+  "isPublic": true,
   "defaultRunOptions$comment": "256 MB: the library waits on the network (peak about 60 MB locally). 3600 s: one residential session reads about 90 ads a minute.",
   "defaultRunOptions": {
     "build": "latest",
