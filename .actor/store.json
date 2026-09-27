@@ -2,8 +2,8 @@
   "$comment": "Listing fields that apify push never sends, applied by scripts/store-metadata.mjs after every deploy.",
   "actorId$comment": "Pinned by ID: CI pushes to this ID and store-metadata.mjs looks it up by ID, so the name in actor.json renames the same actor (created as meta-ad-library-probe on 2026-09-25).",
   "actorId": "DDHgdLYfCKSsrM0Zo",
-  "seoTitle": "Meta Ad Library & Facebook Ads Library Scraper",
-  "seoDescription": "Scrape the Facebook Ads Library (Meta Ad Library) with no login: winning ads by days running, landing pages, creatives, advertiser leads, scam checks.",
+  "seoTitle": "Facebook/Meta Ads Library Scraper - Winning Ads",
+  "seoDescription": "Scrape the Facebook/Meta Ads Library, no login: winning ads, landing pages, creatives, advertiser leads, scam checks. $0.70 per 1,000 ads, no start fee.",
   "exampleRunInput": {
     "searchTerms": [
       "running shoes"

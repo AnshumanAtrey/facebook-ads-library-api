@@ -1,4 +1,4 @@
-# Facebook Ads Library Scraper API - Meta Ad Library & Scam Check
+# Facebook/Meta Ads Library Scraper API - Winning Ads, Scam Check
 
 > Apify actor anshumanatrey/facebook-ads-library-api. Scrapes the Facebook Ads Library, now called the Meta Ad Library (Facebook, Instagram, Messenger, Threads, Audience Network ads), with no login, cookies or Meta API token. Returns one row per ad with advertiser, days running, number of versions, text, headline, call to action, landing URL and domain, image and video links, platforms, and the spend, impressions and EU audience data Meta publishes. Also an advertiser lead list and a brand scam check. $0.0007 per ad ($0.70 per 1,000), $0.008 per advertiser, $0.002 per brand scam-check ad, no start fee.
 
@@ -21,6 +21,15 @@
 ## Output fields (ad row)
 adId, adLibraryUrl, pageName, pageId, pageUrl, pageLikes, pageVerified (true or null; Meta's ad search does not report it), isActive, startDate, endDate, daysRunning, versions, versionGroupId, platforms, adText, headline, description, callToAction, callToActionType, landingUrl, landingDomain, imageUrls, videoUrls, thumbnailUrls, cards, languages, adType, categories, spend, impressions, reach, audienceSize, ageGender, regions, targeting, fundingEntity, disclaimer, beneficiaryPayers, searchTerm, country, impersonation {brand, risk, signals, officialPageIds}, scrapedAt.
 Advertiser row: pageName, pageId, pageUrl, pageLikes, adsInLibraryUrl, adsFound, activeAds, firstAdStarted, longestRunningDays, platforms, landingDomains, sampleAdUrl, sampleAdText, searchTerm, country.
+
+## Price comparison (Apify free plan, per 1,000 ads, 2026-09-25)
+- This actor: $0.70, no start fee.
+- apify/facebook-ads-scraper (6,040 users a month): $5.80.
+- curious_coder/facebook-ads-library-scraper (5,853): $0.75 + $0.00005 per run.
+- igolaizola/facebook-ad-library-scraper (1,048): $0.75 + $0.0075 per run.
+- automation-lab/facebook-ads-library (458): $0.575 + $0.005 per run (cheaper than this actor above about 40 ads per run).
+- memo23/facebook-ads-library-scraper-ppe (340): $0.50 + $0.05 per run (cheaper above about 250 ads per run).
+- jmlp/meta-ad-library-scraper (254): $0.15 + platform usage paid by the user.
 
 ## Facts
 - Meta rate-limits Apify's own IPs and the datacenter proxy to 0 ads (tested 2026-09-25); every search runs on Apify's residential proxy, included in the price.

@@ -1,4 +1,4 @@
-# Facebook Ads Library Scraper API - Meta Ad Library & Scam Check
+# Facebook/Meta Ads Library Scraper API - Winning Ads, Scam Check
 
 Scrape the Facebook Ads Library, which Meta now calls the Meta Ad Library (ads on Facebook, Instagram, Messenger, Threads and Audience Network), with no login, no cookies and no Meta API token. Type a keyword or paste a Facebook page, and get every matching ad as a row: the advertiser, **how many days the ad has run**, **how many versions it has**, the text, headline and button, **the landing page and its domain**, image and video links, platforms, and the reach, spend and EU audience data Meta publishes. On top of that: an **advertiser list** (businesses advertising on a keyword right now, one row each) and a **brand scam check** (ads that use a brand's name from pages that are not the brand's own). **$0.70 per 1,000 ads**, no start fee. Use it from the Apify Console, the API, Python, JavaScript, n8n, Make, Zapier or an AI agent through the Apify MCP server.
 
@@ -24,6 +24,7 @@ It reads the public Meta Ad Library, the same one at facebook.com/ads/library, a
 
 ## How is it different from other Facebook Ads Library scrapers?
 
+- **Cheaper than the two most-used Facebook/Meta Ads Library scrapers**: $0.70 per 1,000 ads against $5.80 for Apify's own and $0.75 plus a start fee for curious_coder (together about 70% of this category's users). With no start fee it is also the cheapest for small runs: under 40 ads compared with automation-lab and under 250 compared with memo23. On large runs those two and jmlp cost less per ad; the table below shows every price.
 - **Winning-ad signals built in**: `daysRunning` is computed for every ad, `versions` is Meta's own count of an ad's variants, and **Min days live (`minDaysRunning`)** keeps only the long runners.
 - **Landing domain on every ad**, so you can group ads by the site they send people to.
 - **Advertiser list and brand scam check** in the same actor, charged the same way.
