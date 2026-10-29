@@ -1,7 +1,7 @@
 import asyncio
 import logging
 import unittest
-from datetime import datetime
+from datetime import datetime, timedelta
 from types import SimpleNamespace
 from unittest import mock
 
@@ -117,8 +117,9 @@ class RunTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual((run.searches[0]['status'], run.failed()), ('done', False))
 
     async def test_min_days_and_version_grouping(self):
-        old = [make_ad(i=str(i), start=datetime(2026, 6, 1)) for i in range(5)]
-        fresh = [make_ad(i=str(10 + i), start=datetime(2026, 9, 24)) for i in range(5)]
+        # Relative to today: fixed dates aged the 'fresh' ads past 30 days a month after this was written.
+        old = [make_ad(i=str(i), start=datetime.now() - timedelta(days=120)) for i in range(5)]
+        fresh = [make_ad(i=str(10 + i), start=datetime.now() - timedelta(days=2)) for i in range(5)]
         run, actor = await self.run_it({'searchTerms': ['s'], 'minDaysRunning': 30}, [old + fresh])
         self.assertEqual(len(actor.rows), 5)
         self.assertTrue(all(r['daysRunning'] >= 30 for r in actor.rows))

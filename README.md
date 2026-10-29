@@ -34,7 +34,7 @@ It reads the public Meta Ad Library, the same one at facebook.com/ads/library, a
 
 ## How much does it cost to scrape the Facebook Ads Library?
 
-**$0.0007 per ad ($0.70 per 1,000)**, **$0.008 per advertiser** in the Advertiser list and **$0.002 per ad** in the brand scam check (it first reads the brand's own pages to learn their real websites). No start fee, no monthly fee, platform usage and residential proxy included.
+**$0.0007 per ad ($0.70 per 1,000)**, **$0.008 per advertiser** in the Advertiser list and **$0.002 per ad** in the brand scam check (it first reads the brand's own pages to learn their real websites). No start fee, no monthly fee, platform usage and residential proxy included. On paid Apify plans every price is 10% less on Scale and 20% less on Business and above ($0.56 per 1,000 ads on Business).
 
 | Run | Charged | Price |
 |---|---|---|

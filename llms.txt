@@ -23,7 +23,7 @@ adId, adLibraryUrl, pageName, pageId, pageUrl, pageLikes, pageVerified (true or 
 Advertiser row: pageName, pageId, pageUrl, pageLikes, adsInLibraryUrl, adsFound, activeAds, firstAdStarted, longestRunningDays, platforms, landingDomains, sampleAdUrl, sampleAdText, searchTerm, country.
 
 ## Price comparison (Apify free plan, per 1,000 ads, 2026-09-25)
-- This actor: $0.70, no start fee.
+- This actor: $0.70, no start fee ($0.63 on Apify's Scale plan, $0.56 on Business and above).
 - apify/facebook-ads-scraper (6,040 users a month): $5.80.
 - curious_coder/facebook-ads-library-scraper (5,853): $0.75 + $0.00005 per run.
 - igolaizola/facebook-ad-library-scraper (1,048): $0.75 + $0.0075 per run.

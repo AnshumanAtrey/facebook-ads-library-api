@@ -1,0 +1,53 @@
+{
+  "$comment": "Example tasks published on the Store by scripts/publish-tasks.mjs after every deploy (CI only). Each one is a search people type, with its own Google-indexed landing page and .md (manager/rules/SEO.md). Presets are public brands and generic product keywords.",
+  "options": {
+    "build": "latest",
+    "memoryMbytes": 256,
+    "timeoutSecs": 3600
+  },
+  "tasks": [
+    {
+      "name": "facebook-ad-library-keyword-search",
+      "title": "Facebook Ad Library search: every active ad for a keyword",
+      "description": "Search the Meta Ad Library for a keyword and get each active Facebook and Instagram ad with its text, images or video, landing page, call to action, start date, days running and the page behind it, one row per ad. No login, no Meta API token. Replace running shoes with your keyword and pick a country.",
+      "input": {
+        "mode": "ads",
+        "searchTerms": ["running shoes"],
+        "maxAds": 50
+      },
+      "seoTitle": "Facebook Ad Library Search - Active Ads by Keyword",
+      "seoDescription": "Every active Facebook and Instagram ad for a keyword from the Meta Ad Library: text, media, landing page, start date and days running. No login or token.",
+      "inputSchemaFields": ["searchTerms", "country", "maxAds", "mediaType"],
+      "datasetView": "overview"
+    },
+    {
+      "name": "winning-facebook-ads-running-30-days",
+      "title": "Winning Facebook ads: ads still running after 30 days",
+      "description": "Find the ads advertisers keep paying for: Facebook and Instagram ads for a keyword that have run for 30 days or more, a common sign that an ad converts. Each row has the creative, landing page and days running. Swap skincare for your niche and adjust the minimum days.",
+      "input": {
+        "mode": "ads",
+        "searchTerms": ["skincare"],
+        "minDaysRunning": 30,
+        "maxAds": 50
+      },
+      "seoTitle": "Winning Facebook Ads - Ads Running 30+ Days",
+      "seoDescription": "Facebook and Instagram ads for a keyword that have run 30 days or more, a sign they convert, with creative, landing page and days running. Spy on winners.",
+      "inputSchemaFields": ["searchTerms", "minDaysRunning", "country", "maxAds"],
+      "datasetView": "creatives"
+    },
+    {
+      "name": "facebook-ads-of-a-brand-page",
+      "title": "Facebook ads of a brand: every ad a page is running",
+      "description": "List every ad a Facebook page is running on Facebook and Instagram, with creatives, landing pages, start dates and how long each has run. Paste page links, ids or names, such as Gymshark or https://www.facebook.com/nike, to track competitors.",
+      "input": {
+        "mode": "pages",
+        "pages": ["Gymshark"],
+        "maxAds": 50
+      },
+      "seoTitle": "Facebook Ads of a Page - Competitor Ad Tracker",
+      "seoDescription": "Every ad a Facebook page runs on Facebook and Instagram, with creatives, landing pages and days running. Paste a page link or name to track a competitor.",
+      "inputSchemaFields": ["pages", "status", "maxAds", "country"],
+      "datasetView": "overview"
+    }
+  ]
+}
