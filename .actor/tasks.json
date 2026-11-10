@@ -1,5 +1,5 @@
 {
-  "$comment": "Example tasks published on the Store by scripts/publish-tasks.mjs after every deploy (CI only). Each one is a search people type, with its own Google-indexed landing page and .md (manager/rules/SEO.md). Presets are public brands and generic product keywords.",
+  "$comment": "Example tasks published on the Store by scripts/publish-tasks.mjs after every deploy (CI only). Each one is a search people type, with its own Google-indexed landing page and .md (manager/rules/SEO.md). Presets are public brands and generic product keywords. Tasks marked publish false stay saved but off the Store: the account publishes at most 100 pages across all actors, so each actor keeps 2 or more by its earnings and search traffic (2026-11-11).",
   "options": {
     "build": "latest",
     "memoryMbytes": 256,
@@ -8,6 +8,7 @@
   "tasks": [
     {
       "name": "facebook-ad-library-keyword-search",
+      "publish": false,
       "title": "Facebook Ad Library search: every active ad for a keyword",
       "description": "Search the Meta Ad Library for a keyword and get each active Facebook and Instagram ad with its text, images or video, landing page, call to action, start date, days running and the page behind it, one row per ad. No login, no Meta API token. Replace running shoes with your keyword and pick a country.",
       "input": {
