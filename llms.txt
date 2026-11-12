@@ -9,6 +9,13 @@
 - Brand protection: ads using a brand name from pages that are not the brand's own, with risk and signals (mode impersonation).
 - Feeding ad data to n8n, Make, Zapier, Python, JavaScript or an AI agent (Apify MCP server).
 
+## Use it from an AI assistant
+
+- Claude (claude.ai and the desktop app): https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Facebook%2FMeta%20Ads%20Library&connectorUrl=https%3A%2F%2Fmcp.apify.com%3Ftools%3Danshumanatrey%2Ffacebook-ads-library-api (click Continue, sign in to Apify, Allow).
+- Claude Code: claude mcp add --transport http facebook-ads-library-api "https://mcp.apify.com?tools=anshumanatrey/facebook-ads-library-api", then /mcp to sign in to Apify.
+- Codex: codex mcp add facebook-ads-library-api --url "https://mcp.apify.com?tools=anshumanatrey/facebook-ads-library-api", then codex mcp login facebook-ads-library-api.
+- Any other MCP client: https://mcp.apify.com?tools=anshumanatrey/facebook-ads-library-api, signed in with Apify or Authorization: Bearer <APIFY_TOKEN>.
+
 ## Inputs
 - mode: ads (default) | pages | advertisers | impersonation
 - searchTerms: keywords, one per line (commas split); a pasted Ad Library search link works; for impersonation, the brand

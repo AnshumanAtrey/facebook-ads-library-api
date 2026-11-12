@@ -2,6 +2,13 @@
 
 Scrape the Facebook Ads Library, which Meta now calls the Meta Ad Library (ads on Facebook, Instagram, Messenger, Threads and Audience Network), with no login, no cookies and no Meta API token. Type a keyword or paste a Facebook page, and get every matching ad as a row: the advertiser, **how many days the ad has run**, **how many versions it has**, the text, headline and button, **the landing page and its domain**, image and video links, platforms, and the reach, spend and EU audience data Meta publishes. On top of that: an **advertiser list** (businesses advertising on a keyword right now, one row each) and a **brand scam check** (ads that use a brand's name from pages that are not the brand's own). **$0.70 per 1,000 ads**, no start fee. Use it from the Apify Console, the API, Python, JavaScript, n8n, Make, Zapier or an AI agent through the Apify MCP server.
 
+**Use it from an AI assistant:**
+
+- **Claude** (claude.ai and the desktop app): [Add Facebook/Meta Ads Library to Claude](https://claude.ai/customize/connectors?modal=add-custom-connector&connectorName=Facebook%2FMeta%20Ads%20Library&connectorUrl=https%3A%2F%2Fmcp.apify.com%3Ftools%3Danshumanatrey%2Ffacebook-ads-library-api), click Continue, sign in to Apify, Allow, and ask in plain words.
+- **Claude Code:** `claude mcp add --transport http facebook-ads-library-api "https://mcp.apify.com?tools=anshumanatrey/facebook-ads-library-api"`, then run `/mcp` to sign in to Apify.
+- **Codex:** `codex mcp add facebook-ads-library-api --url "https://mcp.apify.com?tools=anshumanatrey/facebook-ads-library-api"`, then `codex mcp login facebook-ads-library-api`.
+- **Any other MCP client:** `https://mcp.apify.com?tools=anshumanatrey/facebook-ads-library-api`, signed in with Apify or an `Authorization: Bearer <APIFY_TOKEN>` header.
+
 ## What does it do?
 
 It reads the public Meta Ad Library, the same one at facebook.com/ads/library, and returns what you would otherwise copy by hand, for as many keywords or advertisers as you give it:
