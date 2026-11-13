@@ -23,7 +23,7 @@ from datetime import datetime, timezone
 from apify import Actor
 
 from . import meta
-from .inputs import Config, InputError, parse_input
+from .inputs import EXAMPLE_NOTE, Config, InputError, parse_input
 from .rows import _fold, ad_row, advertiser_rows, domain_of, impersonation, matches_media
 
 AD_EVENT = 'ad'                 # pay-per-event: one ad row; must equal the event key in .actor/store.json
@@ -64,11 +64,16 @@ class Delivery:
         self.charged: Counter = Counter({AD_EVENT: 0, ADVERTISER_EVENT: 0, SCAM_EVENT: 0})
         self.rows = 0
         self.limit = False
+        self.free = False              # the example run: rows delivered without their event
 
     async def push(self, rows: list[dict], event: str) -> int:
         """Returns how many rows were delivered: the SDK drops rows the spending limit cannot pay for."""
         if not rows:
             return 0
+        if self.free:
+            await self.actor.push_data(rows)
+            self.rows += len(rows)
+            return len(rows)
         result = await self.actor.push_data(rows, charged_event_name=event)
         done = result.charged_count if self.ppe else len(rows)
         if self.ppe and (result.event_charge_limit_reached or done < len(rows)):
@@ -81,6 +86,7 @@ class Delivery:
 class Run:
     def __init__(self, cfg: Config, delivery: Delivery, sessions: meta.Sessions, clock=time.monotonic):
         self.cfg, self.delivery, self.sessions, self.clock = cfg, delivery, sessions, clock
+        delivery.free = cfg.example
         self.t0 = clock()
         self.stop: str | None = None
         self.searches: list[dict] = []
@@ -303,6 +309,8 @@ class Run:
             parts.append(f'{len(refused)} search(es) had settings Meta refused: {refused[0]["reason"]}')
         if self.stop and final:
             parts.append(f'The run stopped early because {STOP_REASONS[self.stop]}')
+        if final and cfg.example:
+            parts.insert(0, EXAMPLE_NOTE)
         return ' '.join(parts)
 
     def output(self, status: str) -> dict:

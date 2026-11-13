@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-14
+
+- A run given no keyword and no advertiser (a blank line, which Apify's input check lets through, or an API call with
+  neither field) no longer fails with "No keywords to search". It searches the form's example, running shoes, for 20
+  ads, free of charge, and says so in the status message and `OUTPUT.notes`, so the run shows what it returns.
+
 ## 2026-11-11 (example pages)
 
 - Two example pages stay on the Store: winning ads and the ads of a brand page. Keyword search, which the main page

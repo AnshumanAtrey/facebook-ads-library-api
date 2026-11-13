@@ -22,6 +22,10 @@ MEDIA_TYPES = ('all', 'image', 'video', 'meme', 'none')
 SORTS = ('impressions', 'relevance')
 MAX_TERM_CHARS = 100
 MAX_ADS_CAP = 5000
+EXAMPLE_TERM = 'running shoes'   # the form's prefill: searched free when nothing is given, instead of failing
+EXAMPLE_ADS = 20                 # the prefill's ad count: the example is free, so it stays small
+EXAMPLE_NOTE = ('No keyword or advertiser was given, so this run searched the example running shoes (20 ads), free '
+                'of charge. Enter your own keywords in Keywords (searchTerms), one per line.')
 COUNTRIES: dict[str, str] = json.loads((Path(__file__).parent / 'countries.json').read_text(encoding='utf-8'))
 WORLDWIDE = {'', 'ALL', 'WW', 'WORLDWIDE', 'GLOBAL', 'WORLD', 'ANY'}
 NAME_ALIASES = {'USA': 'US', 'U.S.': 'US', 'U.S.A.': 'US', 'AMERICA': 'US', 'UNITED STATES OF AMERICA': 'US',
@@ -53,6 +57,7 @@ class Config:
     group_versions: bool = False
     sort: str = 'impressions'
     notes: list[str] = field(default_factory=list)          # plain-English changes we made to the input
+    example: bool = False                                    # nothing given: the example search, delivered free
 
 
 def _upper_plain(text: str) -> str:
@@ -178,6 +183,12 @@ def parse_input(raw: dict | None) -> Config:
     cfg.pages = list(dict.fromkeys(pages))
     cfg.official = list(dict.fromkeys(official))
 
+    if not cfg.terms and not cfg.pages and not link:
+        # Nothing typed (a blank line passes Apify's input check, and the fields are optional through the API): search
+        # the example instead of failing, free, so the run shows what it returns (owner, 2026-11-14).
+        mode = cfg.mode = 'ads'
+        cfg.terms, cfg.example = [EXAMPLE_TERM], True
+        cfg.notes.append(EXAMPLE_NOTE)
     if mode == 'ads' and cfg.pages and not cfg.terms:
         mode = cfg.mode = 'pages'
         cfg.notes.append('Only advertisers were given, so the run lists their ads.')
@@ -213,7 +224,8 @@ def parse_input(raw: dict | None) -> Config:
     cfg.media_type = _choice(from_link('media_type', raw.get('mediaType'), 'all'), MEDIA_TYPES, 'all',
                              'Media type', 'mediaType')
     cfg.min_days = _int(raw.get('minDaysRunning'), 0, 0, 3650, 'Min days live', 'minDaysRunning')
-    cfg.max_ads = _int(raw.get('maxAds'), 100, 1, MAX_ADS_CAP, 'Ads per search', 'maxAds')
+    cfg.max_ads = EXAMPLE_ADS if cfg.example else _int(raw.get('maxAds'), 100, 1, MAX_ADS_CAP, 'Ads per search',
+                                                        'maxAds')
     cfg.exact = bool(raw.get('exactPhrase')) or bool(link.get('exact'))
     cfg.group_versions = bool(raw.get('groupVersions'))
     cfg.sort = _choice(raw.get('sortBy'), SORTS, 'impressions', 'Order', 'sortBy')

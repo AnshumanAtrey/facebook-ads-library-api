@@ -14,9 +14,14 @@ class Keywords(unittest.TestCase):
         self.assertEqual(parse_input({'searchTerms': ['protein powder, creatine; yoga mat']}).terms,
                          ['protein powder', 'creatine', 'yoga mat'])
 
-    def test_no_keywords_says_what_to_type(self):
-        with self.assertRaisesRegex(InputError, 'running shoes'):
-            parse_input({})
+    def test_nothing_typed_searches_the_example(self):
+        # A blank line passes Apify's input check, and the fields are optional through the API: both failed the run
+        # until 2026-11-14. Now the example runs, small and free.
+        for raw in ({}, {'searchTerms': ['']}, {'mode': 'advertisers', 'searchTerms': [' ']}, {'mode': 'impersonation'},
+                    {'searchTerms': [''], 'maxAds': 3000}):
+            cfg = parse_input(raw)
+            self.assertEqual((cfg.mode, cfg.terms, cfg.max_ads, cfg.example), ('ads', ['running shoes'], 20, True), raw)
+        self.assertFalse(parse_input({'searchTerms': ['shoes']}).example)
 
     def test_sentence_is_refused(self):
         with self.assertRaisesRegex(InputError, 'not a sentence'):

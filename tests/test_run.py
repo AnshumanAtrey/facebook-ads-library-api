@@ -55,6 +55,9 @@ class FakeActor:
         return SimpleNamespace(get_pricing_info=lambda: SimpleNamespace(is_pay_per_event=self.ppe))
 
     async def push_data(self, rows, *, charged_event_name=None):
+        if charged_event_name is None:           # as the SDK: no event, nothing charged
+            self.rows += rows
+            return SimpleNamespace(charged_count=0, event_charge_limit_reached=False)
         n = len(rows)
         if self.budget is not None:
             n = min(n, int(round((self.budget - self.spent) / self.price, 6)))
@@ -96,6 +99,13 @@ class RunTests(unittest.IsolatedAsyncioTestCase):
     async def test_max_ads_is_respected_and_charged(self):
         run, actor = await self.run_it({'searchTerms': ['shoes'], 'maxAds': 25}, [ads(60)])
         self.assertEqual((len(actor.rows), run.delivery.charged['ad']), (25, 25))
+
+    async def test_example_run_is_free(self):
+        # Nothing given: the example's 20 ads go out with no event charged, even under a limit below one ad.
+        run, actor = await self.run_it({'searchTerms': ['']}, [ads(60)], budget=0.0001)
+        self.assertEqual((len(actor.rows), run.delivery.charged['ad'], run.stop), (20, 0, None))
+        self.assertTrue(run.message(True).startswith('No keyword or advertiser was given, so this run searched the '
+                                                     'example running shoes (20 ads), free of charge.'))
 
     async def test_spending_limit_stops_cleanly(self):
         run, actor = await self.run_it({'searchTerms': ['shoes'], 'maxAds': 100}, [ads(60)], budget=0.0105)
